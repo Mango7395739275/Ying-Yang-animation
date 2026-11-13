@@ -108,3 +108,22 @@ button {
     margin-top: 25px;
     z-index: 5;
 }
+
+.col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 900px) {
+    body *:not(.yingyang, .yingyang *) {
+        max-width: 90%;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+    }
+}
