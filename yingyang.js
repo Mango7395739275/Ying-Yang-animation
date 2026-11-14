@@ -22,16 +22,22 @@
         let fasterbox = 1;
         let slowerbox = 1;
         let crntsize = 1;
-        let originalstatetext = "Its ";
 
     
 
         function updateReset() {
-            if (Object.values(states).find(x => x)) {
-                originalstatetext = "It's " + Object.entries(states).filter(x => x[1]).map(x => x[0]).join(' and ');
-                reset.textContent = originalstatetext;
-                reset.style.backgroundColor = "rgb(1500, 75, 75)";
-            } 
+            let activeStates = Object.entries(states)
+                .filter(x => x[1])
+                .map(x => x[0]);
+
+            if (activeStates.length === 0) {
+                reset.textContent = "In its original state currently";
+                reset.style.backgroundColor = "lightgreen";
+                return;
+            }
+
+            reset.textContent = "It's " + activeStates.join(" and ");
+            reset.style.backgroundColor = "rgb(225,60,60)";
         }
 
         function buttonshi() {
@@ -39,21 +45,15 @@
                 pause.style.boxShadow = "0px 0px 10px 5px lightgreen";
                 play.style.boxShadow = "none";
                 pause.textContent = "Paused"
-                play.textContent = "Play"
+                play.textContent = "Play";
             }
 
             if (yingyang.style.animationPlayState == "running") {
                 play.style.boxShadow = "0px 0px 10px 5px lightgreen";
                 pause.style.boxShadow = "none";
-                play.textContent = "Playing"
+                play.textContent = "Playing";
+                pause.textContent = "Pause";
             }
-
-            reset.addEventListener("click", () => {
-                yingyang.style.animationPlayState = "running";
-                pause.style.boxShadow = "0px 0px 0px 0px";
-                play.style.boxShadow = "0px 0px 0px 0px";
-
-            })
         }
 
         pause.addEventListener("click", () => {
@@ -175,15 +175,25 @@
             slowerbox = 1;
             crntsize = 1;
             yingyang.style.scale = 1;
+            states.faster = false;
+            states.slower = false;
+            states.paused = false;
+            states.playing = false;
+            states.bigger = false;
+            states.smaller = false;
 
             let aniduration = yingyang.getAnimations()[0];
-            aniduration.playbackRate = 1;
+            if (aniduration) {
+                aniduration.playbackRate = 1;
+            }
 
             slower.style.boxShadow = "0px 0px 0px 0px";
             faster.style.boxShadow = "0px 0px 0px 0px";
             pause.style.boxShadow = "0px 0px 0px 0px";
             play.style.boxShadow = "0px 0px 0px 0px";
 
-            reset.style.backgroundColor = "lightgreen";
-            reset.textContent = "In its original state currently";
+            yingyang.style.animationPlayState = "running";
+            play.textContent = "Playing";
+            pause.textContent = "Pause";
+            updateReset();
         })
